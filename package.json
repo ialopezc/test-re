@@ -3,8 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && vite build --ssr && vite build && vite build --ssr --ssr",
-        "env:optimize": "php artisan optimize",
+        "build": "vite build && vite build --ssr",
+        "env:optimize":"php artisan optimize",
         "env:clear": "php artisan optimize:clear",
         "dev:clear": "npm run env:clear && npm run dev",
         "build:clear": "npm run env:clear && npm run env:optimize && npm run build"
@@ -23,6 +23,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^1.0.14"
+        "@inertiajs/vue3": "^1.0.14",
+        "pinia": "^2.1.7"
     }
 }
