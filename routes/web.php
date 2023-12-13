@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +29,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,4 +37,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::prefix('productos')->group(function () {
+    Route::get('/', [ProductsController::class, 'index'])->name('productos.index');
+    Route::get('/create', [ProductsController::class, 'create'])->name('productos.create');
+    Route::post('/', [ProductsController::class, 'store'])->name('productos.store');
+    // Route::get('/view/{id}', [ProductsController::class, 'show'])->name('productos.show');
+    Route::get('/edit/{id}', [ProductsController::class, 'edit'])->name('productos.edit')->where('id', '[0-9]+');
+    Route::patch('/{id}', [ProductsController::class, 'update'])->name('productos.update')->where('id', '[0-9]+');
+    Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('productos.destroy')->where('id', '[0-9]+');
+})->middleware('auth');
+
+require __DIR__ . '/auth.php';
