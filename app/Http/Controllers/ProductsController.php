@@ -55,35 +55,12 @@ class ProductsController extends Controller
         $product->save();
  
         return Redirect::route('productos.index');
-
-
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'price' => 'required|numeric',
-        // ]);
-
-        // $query = Products::create([
-        //     'name' => $request->name,
-        //     'price' => $request->price
-        // ]);
-
-        // $query->save();
-
-        // return Redirect::route('productos.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): Response
     {
         $query = Products::select([
             'id',
@@ -102,7 +79,7 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -128,5 +105,7 @@ class ProductsController extends Controller
         $flight = Products::find($id);
  
         $flight->delete();
+
+        return true;
     }
 }
