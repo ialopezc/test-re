@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 use App\Models\Products;
+use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 
 class ProductsController extends Controller
 {
@@ -47,29 +48,14 @@ class ProductsController extends Controller
         ]);
 
         $product = new Products;
- 
+
         $product->name = $request->name;
 
         $product->price = $request->price;
- 
+
         $product->save();
- 
+
         return Redirect::route('productos.index');
-
-
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'price' => 'required|numeric',
-        // ]);
-
-        // $query = Products::create([
-        //     'name' => $request->name,
-        //     'price' => $request->price
-        // ]);
-
-        // $query->save();
-
-        // return Redirect::route('productos.index');
     }
 
     /**
@@ -77,13 +63,24 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        if ($id) {
+            $query = Products::find($id);
+        } else {
+            $query = Products::select()
+                ->get()
+                ->toArray();
+            $query = $query[0];
+        }
+
+        if (count($query) > 0) {
+            return $query;
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): Response
     {
         $query = Products::select([
             'id',
@@ -102,7 +99,7 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -110,23 +107,23 @@ class ProductsController extends Controller
         ]);
 
         $product = Products::find($id);
- 
+
         $product->name = $request->name;
-        
+
         $product->price = $request->price;
- 
+
         $product->save();
- 
+
         return Redirect::route('productos.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): void
     {
         $flight = Products::find($id);
- 
+
         $flight->delete();
     }
 }

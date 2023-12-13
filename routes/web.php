@@ -37,14 +37,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('productos')->group(function () {
-    Route::get('/', [ProductsController::class, 'index'])->name('productos.index');
-    Route::get('/create', [ProductsController::class, 'create'])->name('productos.create');
-    Route::post('/', [ProductsController::class, 'store'])->name('productos.store');
-    // Route::get('/view/{id}', [ProductsController::class, 'show'])->name('productos.show');
-    Route::get('/edit/{id}', [ProductsController::class, 'edit'])->name('productos.edit')->where('id', '[0-9]+');
-    Route::patch('/{id}', [ProductsController::class, 'update'])->name('productos.update')->where('id', '[0-9]+');
-    Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('productos.destroy')->where('id', '[0-9]+');
-})->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::prefix('productos')->group(function () {
+        Route::get('/', [ProductsController::class, 'index'])->name('productos.index');
+        Route::get('/create', [ProductsController::class, 'create'])->name('productos.create');
+        Route::post('/', [ProductsController::class, 'store'])->name('productos.store');
+        Route::get('/view', [ProductsController::class, 'show'])->name('productos.show');
+        Route::get('/view/{id}', [ProductsController::class, 'show'])->name('productos.show');
+        Route::get('/edit/{id}', [ProductsController::class, 'edit'])->name('productos.edit')->whereNumber('id');
+        Route::patch('/{id}', [ProductsController::class, 'update'])->name('productos.update')->whereNumber('id');
+        Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('productos.destroy')->whereNumber('id');
+    });
+});
 
 require __DIR__ . '/auth.php';

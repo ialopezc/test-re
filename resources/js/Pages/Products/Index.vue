@@ -3,23 +3,27 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { defineStore } from 'pinia';
+import { initStore } from '../../../store/StateProducts.vue';
 
-defineProps({
-    productos: {
-        type: Object,
-    },
-});
 
-// const useStore = defineStore('productos', {
-//     state: () => {
-//         return {
-//             productos,
-//         };
+
+// defineProps({
+//     productos: {
+//         type: Object,
 //     },
-// })
+// });
 
-// console.log(useStore());
+// initStore();
+
+const { productos } = defineProps(['productos']);
+
+// console.log({ productos });
+
+// const state = {
+//     productos
+// }
+
+// console.log(state);
 
 /**
  * Clic a boton nuevo
